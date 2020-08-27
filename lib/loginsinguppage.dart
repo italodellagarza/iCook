@@ -61,7 +61,10 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           _formKey.currentState.reset();
         });
       }
-    }
+    };
+    setState(() {
+      _isLoading: false;
+    });
   }
 
   @override
@@ -138,7 +141,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                       borderRadius: BorderRadius.circular(150),
                     ),
                     SizedBox(height: 10),
-                    Text('ICook', 
+                    Text('iCook', 
                       style: TextStyle(
                         fontSize: 30.0, 
                         color: Colors.white, 
