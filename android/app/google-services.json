@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "423933723702",
+    "firebase_url": "https://icook-gcc144.firebaseio.com",
+    "project_id": "icook-gcc144",
+    "storage_bucket": "icook-gcc144.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:423933723702:android:97e31631214258ebdac497",
+        "android_client_info": {
+          "package_name": "com.example.ICook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "423933723702-vl8v2gbf9looeokb21qsj2fhun5po3cd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDueOX3lLfH3zFSCNCHNwM7vhxREPQHHQI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "423933723702-vl8v2gbf9looeokb21qsj2fhun5po3cd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
