@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
-
 import 'authentication.dart';
 import 'package:ICook/homepage.dart';
 import 'package:ICook/loginsinguppage.dart';
-
 
 enum AuthStatus {
   NOT_DETERMINED,
@@ -81,10 +79,10 @@ class _RootPageState extends State<RootPage> {
       case AuthStatus.LOGGED_IN:
         if (_userId.length > 0 && _userId != null) {
           return MyHomePage(
-            //userId: _userId,
-            //auth: widget.auth,
-            //logoutCallback: logoutCallback,
-          );
+              //userId: _userId,
+              //auth: widget.auth,
+              //logoutCallback: logoutCallback,
+              );
         } else
           return buildWaitingScreen();
         break;
