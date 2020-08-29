@@ -23,24 +23,36 @@ class _CadastrarReceitasPageState extends State<CadastrarReceitasPage> {
   final _modoDeFazerController = TextEditingController();
   final _rendimentoController = TextEditingController();
   final _tempoPreparoController = TextEditingController();
-
-  File _image;
   final picker = ImagePicker();
 
-  void cadastrar(Receita receita) async {
+  bool loading = false;
+  File _image;
+
+  void cadastrar(Receita receita, BuildContext context) async {
     var firebaseUser = await auth.getCurrentUser();
-    firestore
-        .cadastrarReceita(receita, firebaseUser.uid)
-        .then((value) => showDialog('sucesso'));
+    firestore.cadastrarReceita(receita, firebaseUser.uid).then((value) {
+      exibirConfirmacao(context);
+    });
   }
 
-  void showDialog(String msg) {
-    print(msg);
-    acaoAposSalvar();
-  }
-
-  void acaoAposSalvar() {
-    //TODO: fazer alguma coisa depois de salvar
+  void exibirConfirmacao(BuildContext context) {
+    setState(() {
+      loading = false;
+    });
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Sucesso!'),
+            content: Text('Sua receita foi publicada com sucesso!'),
+            actions: <Widget>[
+              FlatButton(
+                  child: Text('Ok'),
+                  onPressed: () =>
+                      {Navigator.of(context).pop(), Navigator.pop(context)})
+            ],
+          );
+        });
   }
 
   Future getImage() async {
@@ -67,7 +79,7 @@ class _CadastrarReceitasPageState extends State<CadastrarReceitasPage> {
     StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
     if (uploadTask.isComplete) {
       receita.setImage(fileName);
-      cadastrar(receita);
+      cadastrar(receita, context);
     }
   }
 
@@ -209,26 +221,47 @@ class _CadastrarReceitasPageState extends State<CadastrarReceitasPage> {
                   Padding(
                     padding: EdgeInsets.all(10.0),
                     child: RaisedButton(
-                      onPressed: () {
-                        String nomeReceita = _nomeReceitaController.text;
-                        String ingredientes = _ingredientesController.text;
-                        String modoDeFazer = _modoDeFazerController.text;
-                        String rendimento = _rendimentoController.text;
-                        String tempoPreparo = _tempoPreparoController.text;
-                        Receita receita = new Receita(nomeReceita, ingredientes,
-                            modoDeFazer, rendimento, tempoPreparo);
+                      onPressed: loading
+                          ? null
+                          : () {
+                              setState(() {
+                                loading = true;
+                              });
+                              String nomeReceita = _nomeReceitaController.text;
+                              String ingredientes =
+                                  _ingredientesController.text;
+                              String modoDeFazer = _modoDeFazerController.text;
+                              String rendimento = _rendimentoController.text;
+                              String tempoPreparo =
+                                  _tempoPreparoController.text;
+                              Receita receita = new Receita(
+                                  nomeReceita,
+                                  ingredientes,
+                                  modoDeFazer,
+                                  rendimento,
+                                  tempoPreparo);
 
-                        if (_image != null) {
-                          uploadImage(context, receita);
-                        } else {
-                          cadastrar(receita);
-                        }
-                      },
+                              if (_image != null) {
+                                uploadImage(context, receita);
+                              } else {
+                                cadastrar(receita, context);
+                              }
+                            },
                       color: Colors.red,
                       textColor: Colors.white,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
-                      child: Center(child: Text('POSTAR')),
+                      child: Center(
+                          child: loading
+                              ? SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2.0,
+                                    backgroundColor: Colors.white,
+                                  ),
+                                )
+                              : Text('POSTAR')),
                     ),
                   ),
                 ],
