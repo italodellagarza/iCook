@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/services.dart';
 
 import 'authentication.dart';
 import 'package:ICook/homepage.dart';
@@ -36,6 +38,7 @@ class _RootPageState extends State<RootPage> {
             user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
       });
     });
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
   }
 
   void loginCallback() {
@@ -79,11 +82,11 @@ class _RootPageState extends State<RootPage> {
         break;
       case AuthStatus.LOGGED_IN:
         if (_userId.length > 0 && _userId != null) {
-          return MyHomePage(
-            //userId: _userId,
-            //auth: widget.auth,
-            //logoutCallback: logoutCallback,
-           );
+          return MyHomePage(auth: widget.auth
+              //userId: _userId,
+              //auth: widget.auth,
+              //logoutCallback: logoutCallback,
+              );
         } else
           return buildWaitingScreen();
         break;

@@ -1,7 +1,17 @@
+import 'package:ICook/authentication.dart';
+import 'package:ICook/loginsinguppage.dart';
+import 'package:ICook/model/user.dart';
 import 'package:flutter/material.dart';
 
+class MainDrawerPage extends StatefulWidget {
+  MainDrawerPage({this.user, this.auth});
+  final Usuario user;
+  final Auth auth;
+  @override
+  _MainDrawerPageState createState() => _MainDrawerPageState();
+}
 
-class MainDrawer extends StatelessWidget {
+class _MainDrawerPageState extends State<MainDrawerPage> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -23,20 +33,18 @@ class MainDrawer extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      image: DecorationImage(image: NetworkImage(
-                          'https://previews.123rf.com/images/dxinerz/dxinerz1508/dxinerz150800924/43773803-chef-cooking-cook-icon-vector-image-can-also-be-used-for-activities-suitable-for-use-on-web-apps-mob.jpg'
-                        ),
-                        fit: BoxFit.fill
-                      ),
+                      image: DecorationImage(
+                          image: NetworkImage(
+                              'https://previews.123rf.com/images/dxinerz/dxinerz1508/dxinerz150800924/43773803-chef-cooking-cook-icon-vector-image-can-also-be-used-for-activities-suitable-for-use-on-web-apps-mob.jpg'),
+                          fit: BoxFit.fill),
                     ),
                   ),
-                  Text("Usuário 1", 
-                    style: TextStyle(
-                      fontSize: 22, 
-                      color: Colors.white
-                    ),
+                  Text(
+                    "Usuário 1",
+                    style: TextStyle(fontSize: 22, color: Colors.white),
                   ),
-                  Text("usuário1@gmail.com", 
+                  Text(
+                    widget.user != null ? widget.user.email : '',
                     style: TextStyle(
                       color: Colors.white,
                     ),
@@ -47,13 +55,15 @@ class MainDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.account_circle),
-            title: Text("Minha conta", style: TextStyle(
+            title: Text(
+              "Minha conta",
+              style: TextStyle(
                 fontSize: 18,
               ),
             ),
-            onTap: (){
+            onTap: () {
               //Navigator.push(
-              //  context, 
+              //  context,
               //  MaterialPageRoute(builder: (BuildContext context) => CadastrarReceitasPage()),
               //);
               //Navigator.of(context).pop();
@@ -62,12 +72,19 @@ class MainDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.arrow_back),
-            title: Text("Logout", style: TextStyle(
+            title: Text(
+              "Logout",
+              style: TextStyle(
                 fontSize: 18,
               ),
             ),
-            onTap: (){
-              
+            onTap: () {
+              widget.auth.signOut();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => LoginSignupPage()),
+              );
             },
           ),
         ],
