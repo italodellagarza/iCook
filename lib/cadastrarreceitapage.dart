@@ -132,7 +132,7 @@ class _CadastrarReceitasPageState extends State<CadastrarReceitasPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           IconButton(
-                            icon: Icon(Icons.camera),
+                            icon: Icon(Icons.add_a_photo),
                             onPressed: getImage,
                             tooltip: 'Escolher imagem',
                           ),

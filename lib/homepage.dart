@@ -1,4 +1,5 @@
 import 'package:ICook/model/user.dart';
+import 'package:ICook/recipe_tile.dart';
 import 'package:flutter/material.dart';
 
 import 'cadastrarreceitapage.dart';
@@ -69,12 +70,16 @@ class _MyHomePageState extends State<MyHomePage>
         appBar: AppBar(
           title: Row(
             children: <Widget>[
-              //Image.asset('imgs/icon.png'),
-              Icon(
-                Icons.add_circle,
-                color: Colors.red,
-                size: 50,
+              Container(
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("imgs/icon.png"),
+                      fit: BoxFit.fitHeight),
+                ),
               ),
+              SizedBox(width: 5),
               Text("iCook"),
             ],
           ),
@@ -84,6 +89,17 @@ class _MyHomePageState extends State<MyHomePage>
         body: Container(
           child: Stack(
             children: <Widget>[
+              Container(
+                color: Colors.grey[300],
+                child: ListView(
+                  children: <Widget>[
+                    RecipeTile(),
+                    RecipeTile(),
+                    RecipeTile(),
+                    RecipeTile(),
+                  ],
+                ),
+              ),
               Positioned(
                   right: 30,
                   bottom: 30,
@@ -93,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage>
                       IgnorePointer(
                         child: Container(
                           color: Colors.white.withOpacity(
-                              0.5), // comment or change to transparent color
+                              0.100), // comment or change to transparent color
                           height: 150.0,
                           width: 150.0,
                         ),
@@ -107,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage>
                             ..scale(degOneTranslationAnimation.value),
                           alignment: Alignment.center,
                           child: CircularButton(
-                            color: Colors.green[300],
+                            color: Colors.green,
                             width: 50,
                             height: 50,
                             icon: Icon(
@@ -116,6 +132,7 @@ class _MyHomePageState extends State<MyHomePage>
                             ),
                             onClick: () {
                               print('First Button');
+                              animationController.reverse();
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -135,7 +152,7 @@ class _MyHomePageState extends State<MyHomePage>
                             ..scale(degTwoTranslationAnimation.value),
                           alignment: Alignment.center,
                           child: CircularButton(
-                            color: Colors.black45,
+                            color: Colors.black,
                             width: 50,
                             height: 50,
                             icon: Icon(
@@ -144,6 +161,7 @@ class _MyHomePageState extends State<MyHomePage>
                             ),
                             onClick: () {
                               print('Third Button');
+                              animationController.reverse();
                             },
                           ),
                         ),
@@ -170,7 +188,7 @@ class _MyHomePageState extends State<MyHomePage>
                         ),
                       )
                     ],
-                  ))
+                  )),
             ],
           ),
         )
