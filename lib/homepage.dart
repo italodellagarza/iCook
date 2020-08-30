@@ -7,8 +7,10 @@ import 'circularButton.dart';
 import 'drawer_menu.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title, this.auth}) : super(key: key);
+  MyHomePage({Key key, this.title, this.auth, this.logoutCallback})
+      : super(key: key);
   final auth;
+  final logoutCallback;
   final String title;
 
   @override
@@ -57,8 +59,8 @@ class _MyHomePageState extends State<MyHomePage>
     var firebaseUser = await widget.auth.getCurrentUser();
     print(firebaseUser);
     setState(() {
-      user = new Usuario(
-          firebaseUser.email, firebaseUser.email, firebaseUser.email);
+      user = new Usuario(firebaseUser.email, firebaseUser.email,
+          avatar: firebaseUser.email);
     });
     // TODO: ajutar os dados do usuario
     print(user);
@@ -85,7 +87,10 @@ class _MyHomePageState extends State<MyHomePage>
           ),
           backgroundColor: Colors.black54,
         ),
-        drawer: MainDrawerPage(user: user, auth: widget.auth),
+        drawer: MainDrawerPage(
+            user: user,
+            auth: widget.auth,
+            logoutCallback: widget.logoutCallback),
         body: Container(
           child: Stack(
             children: <Widget>[

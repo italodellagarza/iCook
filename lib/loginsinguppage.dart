@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'authentication.dart';
+import 'package:ICook/authentication.dart';
+import 'package:ICook/model/user.dart';
 
 class LoginSignupPage extends StatefulWidget {
   LoginSignupPage({this.auth, this.loginCallback});
@@ -45,7 +46,9 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           userId = await widget.auth.signIn(_email, _password);
           print('Signed in: $userId');
         } else {
+          Usuario usuario = new Usuario(_nomeUsuario, _sobrenomeUsuario);
           userId = await widget.auth.signUp(_email, _password);
+          // TODO cadastrar instância no firabase usand  userId e usuario.
           print('Signed up user: $userId');
         }
         setState(() {
@@ -85,10 +88,21 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   }
 
   void toggleFormMode() {
-    resetForm();
     setState(() {
       _isLoginForm = !_isLoginForm;
     });
+    if (_isLoginForm) {
+      setState(() {
+        _nomeUsuario = " ";
+        _sobrenomeUsuario = " ";
+      });
+    } else {
+      setState(() {
+        _nomeUsuario = null;
+        _sobrenomeUsuario = null;
+      });
+    }
+    resetForm();
   }
 
   @override
@@ -118,18 +132,21 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       return Padding(
         padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
         child: TextFormField(
-          maxLines: 1,
-          autofocus: false,
-          decoration: InputDecoration(
-              hintText: 'Seu nome',
-              icon: Icon(
-                Icons.person,
-                color: Colors.grey,
-              )),
-          validator: (value) =>
-              value.isEmpty ? 'O seu nome não pode estar vazio.' : null,
-          onSaved: (value) => _nomeUsuario = value.trim(),
-        ),
+            maxLines: 1,
+            autofocus: false,
+            decoration: InputDecoration(
+                hintText: 'Seu nome',
+                icon: Icon(
+                  Icons.person,
+                  color: Colors.grey,
+                )),
+            validator: (value) =>
+                value.isEmpty ? 'O seu nome não pode estar vazio.' : null,
+            onSaved: (value) {
+              setState(() {
+                _nomeUsuario = value.trim();
+              });
+            }),
       );
     } else {
       return Padding(padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0));
@@ -141,18 +158,21 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       return Padding(
         padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
         child: TextFormField(
-          maxLines: 1,
-          autofocus: false,
-          decoration: InputDecoration(
-              hintText: 'Seu sobrenome',
-              icon: Icon(
-                Icons.person,
-                color: Colors.grey,
-              )),
-          validator: (value) =>
-              value.isEmpty ? 'O seu sobrenome não pode estar vazio.' : null,
-          onSaved: (value) => _sobrenomeUsuario = value.trim(),
-        ),
+            maxLines: 1,
+            autofocus: false,
+            decoration: InputDecoration(
+                hintText: 'Seu sobrenome',
+                icon: Icon(
+                  Icons.person,
+                  color: Colors.grey,
+                )),
+            validator: (value) =>
+                value.isEmpty ? 'O seu sobrenome não pode estar vazio.' : null,
+            onSaved: (value) {
+              setState(() {
+                _sobrenomeUsuario = value.trim();
+              });
+            }),
       );
     } else {
       return Container(
@@ -265,7 +285,11 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                                 validator: (value) => value.isEmpty
                                     ? 'O e-mail não pode ser vazio'
                                     : null,
-                                onSaved: (value) => _email = value.trim(),
+                                onSaved: (value) {
+                                  setState(() {
+                                    _email = value.trim();
+                                  });
+                                },
                               ),
                             ),
                             Padding(
@@ -273,20 +297,23 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                               padding: const EdgeInsets.fromLTRB(
                                   0.0, 15.0, 0.0, 0.0),
                               child: TextFormField(
-                                maxLines: 1,
-                                obscureText: true,
-                                autofocus: false,
-                                decoration: InputDecoration(
-                                    hintText: 'Senha de 6 digitos',
-                                    icon: Icon(
-                                      Icons.lock,
-                                      color: Colors.grey,
-                                    )),
-                                validator: (value) => value.isEmpty
-                                    ? 'A senha não pode ser vazia'
-                                    : null,
-                                onSaved: (value) => _password = value.trim(),
-                              ),
+                                  maxLines: 1,
+                                  obscureText: true,
+                                  autofocus: false,
+                                  decoration: InputDecoration(
+                                      hintText: 'Senha de 6 digitos',
+                                      icon: Icon(
+                                        Icons.lock,
+                                        color: Colors.grey,
+                                      )),
+                                  validator: (value) => value.isEmpty
+                                      ? 'A senha não pode ser vazia'
+                                      : null,
+                                  onSaved: (value) {
+                                    setState(() {
+                                      _password = value.trim();
+                                    });
+                                  }),
                             ),
                             Padding(
                                 //Botão primário
