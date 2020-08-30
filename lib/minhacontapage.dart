@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
 import 'package:ICook/authentication.dart';
 import 'package:ICook/model/user.dart';
 
@@ -17,6 +16,7 @@ class MinhaContaPage extends StatefulWidget {
 class _MinhaContaPageState extends State<MinhaContaPage> {
   final _formKey = GlobalKey<FormState>();
   final picker = ImagePicker();
+  bool loading = false;
 
   TextEditingController campoNomeUsuarioController;
   TextEditingController campoSobrenomeUsuarioController;
@@ -52,6 +52,27 @@ class _MinhaContaPageState extends State<MinhaContaPage> {
     });
   }
 
+  void atualizarDados() async {
+    if (_novaSenhaController.text.isNotEmpty) {
+      // Atualizar senha do usuário no Firebase
+    }
+
+    widget.user.nome = campoNomeUsuarioController.text;
+    widget.user.email = campoEmailUsuarioController.text;
+    widget.user.avatar = ""; // CADASTRAR IMAGEM NO FIREBASE
+    // Cadastrar user no firebase com o mesmo userId
+  }
+
+  Widget _showCircularProgress() {
+    if (loading) {
+      return Center(child: CircularProgressIndicator());
+    }
+    return Container(
+      height: 0.0,
+      width: 0.0,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO
@@ -73,173 +94,183 @@ class _MinhaContaPageState extends State<MinhaContaPage> {
         ),
         backgroundColor: Colors.black54,
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Form(
-            key: _formKey,
-            child: Padding(
-              padding: EdgeInsets.all(24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Text(
-                        "Minha conta",
-                        style: TextStyle(fontSize: 30),
-                      ),
-                    ),
-                  ),
-                  Column(
+      body: Stack(
+        children: <Widget>[
+          SingleChildScrollView(
+            child: Center(
+              child: Form(
+                key: _formKey,
+                child: Padding(
+                  padding: EdgeInsets.all(24.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      if (_image != null) ...[
-                        Center(
-                          child: CircleAvatar(
-                            radius: 100,
-                            backgroundColor: Colors.red,
-                            child: ClipOval(
-                              child: SizedBox(
-                                width: 190,
-                                height: 190,
-                                child: (_image != null)
-                                    ? Image.file(_image, fit: BoxFit.fill)
-                                    : Image.network(
-                                        'gs://icook-gcc144.appspot.com/image_picker5940230501014420480.jpg',
-                                        fit: BoxFit.fill,
-                                      ),
+                      Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text(
+                            "Minha conta",
+                            style: TextStyle(fontSize: 30),
+                          ),
+                        ),
+                      ),
+                      Column(
+                        children: <Widget>[
+                          if (_image != null) ...[
+                            Center(
+                              child: CircleAvatar(
+                                radius: 100,
+                                backgroundColor: Colors.red,
+                                child: ClipOval(
+                                  child: SizedBox(
+                                    width: 190,
+                                    height: 190,
+                                    child: (_image != null)
+                                        ? Image.file(_image, fit: BoxFit.fill)
+                                        : Image.network(
+                                            'gs://icook-gcc144.appspot.com/image_picker5940230501014420480.jpg',
+                                            fit: BoxFit.fill,
+                                          ),
+                                  ),
+                                ),
                               ),
+                            )
+                          ],
+                          Center(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(Icons.add_a_photo),
+                                onPressed: getImage,
+                                tooltip: 'Escolher imagem',
+                              ),
+                              if (_image != null) ...[
+                                IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: removeImage,
+                                  tooltip: 'Apagar imagem',
+                                )
+                              ]
+                            ],
+                          )),
+                        ],
+                      ),
+                      //Nome
+                      Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: TextFormField(
+                          controller: campoNomeUsuarioController,
+                          decoration: InputDecoration(
+                            labelText: "Nome",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide(),
                             ),
                           ),
-                        )
-                      ],
-                      Center(
-                          child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          IconButton(
-                            icon: Icon(Icons.add_a_photo),
-                            onPressed: getImage,
-                            tooltip: 'Escolher imagem',
+                        ),
+                      ),
+
+                      Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: TextFormField(
+                          controller: campoNomeUsuarioController,
+                          decoration: InputDecoration(
+                            labelText: "Sobrenome",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide(),
+                            ),
                           ),
-                          if (_image != null) ...[
-                            IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: removeImage,
-                              tooltip: 'Apagar imagem',
-                            )
-                          ]
-                        ],
-                      )),
+                        ),
+                      ),
+
+                      Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: TextFormField(
+                          controller: campoEmailUsuarioController,
+                          decoration: InputDecoration(
+                            labelText: "e-mail",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide(),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: TextFormField(
+                          controller: _novaSenhaController,
+                          obscureText: true,
+                          autofocus: false,
+                          decoration: InputDecoration(
+                            labelText: "Nova senha",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide(),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: TextFormField(
+                          controller: _repetirNovaSenhaController,
+                          obscureText: true,
+                          autofocus: false,
+                          decoration: InputDecoration(
+                            labelText: "Repetir nova senha",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide(),
+                            ),
+                          ),
+                          validator: (value) =>
+                              (value.trim() == _novaSenhaController.text)
+                                  ? 'As senhas precisam estar iguais'
+                                  : null,
+                        ),
+                      ),
+
+                      Padding(
+                          //Botão primário
+                          padding: EdgeInsets.all(10.0),
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: 50,
+                            child: RaisedButton(
+                              elevation: 0.0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0)),
+                              color: Colors.green,
+                              child: Text(
+                                'Atualizar Dados',
+                                style: TextStyle(
+                                    fontSize: 20.0, color: Colors.white),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  loading = true;
+                                });
+                                atualizarDados();
+                                setState(() {
+                                  loading = false;
+                                });
+                                Navigator.pop(context);
+                              },
+                            ),
+                          )),
                     ],
                   ),
-                  //Nome
-                  Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: TextFormField(
-                      controller: campoNomeUsuarioController,
-                      decoration: InputDecoration(
-                        labelText: "Nome",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                          borderSide: BorderSide(),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: TextFormField(
-                      controller: campoNomeUsuarioController,
-                      decoration: InputDecoration(
-                        labelText: "Sobrenome",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                          borderSide: BorderSide(),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: TextFormField(
-                      controller: campoEmailUsuarioController,
-                      decoration: InputDecoration(
-                        labelText: "e-mail",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                          borderSide: BorderSide(),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: TextFormField(
-                      controller: _novaSenhaController,
-                      obscureText: true,
-                      autofocus: false,
-                      decoration: InputDecoration(
-                        labelText: "Nova senha",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                          borderSide: BorderSide(),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: TextFormField(
-                      controller: _repetirNovaSenhaController,
-                      obscureText: true,
-                      autofocus: false,
-                      decoration: InputDecoration(
-                        labelText: "Repetir nova senha",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                          borderSide: BorderSide(),
-                        ),
-                      ),
-                      validator: (value) =>
-                          (value.trim() == _novaSenhaController.text)
-                              ? 'As senhas precisam estar iguais'
-                              : null,
-                    ),
-                  ),
-
-                  Padding(
-                      //Botão primário
-                      padding: EdgeInsets.all(10.0),
-                      child: SizedBox(
-                        width: double.infinity,
-                        height: 50,
-                        child: RaisedButton(
-                          elevation: 0.0,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0)),
-                          color: Colors.green,
-                          child: Text(
-                            'Atualizar Dados',
-                            style:
-                                TextStyle(fontSize: 20.0, color: Colors.white),
-                          ),
-                          onPressed: () {
-                            // TODO Atualizar os dados no Firebase
-                            // ATENÇÃO: Se o campo senha estiver nulo,
-                            // desconsiderá-lo na hora de modificar os dados
-                          },
-                        ),
-                      )),
-                ],
+                ),
               ),
             ),
           ),
-        ),
+          _showCircularProgress(),
+        ],
       ),
     );
   }
