@@ -1,7 +1,7 @@
 import 'package:ICook/authentication.dart';
-import 'package:ICook/rootpage.dart';
 import 'package:ICook/model/user.dart';
 import 'package:flutter/material.dart';
+import 'package:ICook/minhacontapage.dart';
 
 class MainDrawerPage extends StatefulWidget {
   MainDrawerPage({this.user, this.auth, this.logoutCallback});
@@ -63,12 +63,16 @@ class _MainDrawerPageState extends State<MainDrawerPage> {
               ),
             ),
             onTap: () {
-              //Navigator.push(
-              //  context,
-              //  MaterialPageRoute(builder: (BuildContext context) => CadastrarReceitasPage()),
-              //);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => MinhaContaPage(
+                          auth: widget.auth,
+                          user: widget.user,
+                        )),
+              );
               //Navigator.of(context).pop();
-              print("AAAAAAAAAAAAAAAAAAAAAAAA");
+              //print("AAAAAAAAAAAAAAAAAAAAAAAA");
             },
           ),
           ListTile(

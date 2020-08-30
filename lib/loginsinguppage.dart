@@ -46,7 +46,8 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           userId = await widget.auth.signIn(_email, _password);
           print('Signed in: $userId');
         } else {
-          Usuario usuario = new Usuario(_nomeUsuario, _sobrenomeUsuario);
+          Usuario usuario =
+              new Usuario(_nomeUsuario, _sobrenomeUsuario, _email);
           userId = await widget.auth.signUp(_email, _password);
           // TODO cadastrar instância no firabase usand  userId e usuario.
           print('Signed up user: $userId');

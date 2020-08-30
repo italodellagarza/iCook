@@ -59,7 +59,8 @@ class _MyHomePageState extends State<MyHomePage>
     var firebaseUser = await widget.auth.getCurrentUser();
     print(firebaseUser);
     setState(() {
-      user = new Usuario(firebaseUser.email, firebaseUser.email,
+      user = new Usuario(
+          firebaseUser.email, firebaseUser.email, firebaseUser.email,
           avatar: firebaseUser.email);
     });
     // TODO: ajutar os dados do usuario
