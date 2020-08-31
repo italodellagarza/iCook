@@ -86,7 +86,24 @@ class _CadastrarReceitasPageState extends State<CadastrarReceitasPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("iCook")),
+      appBar: AppBar(
+        title: Row(
+          children: <Widget>[
+            Container(
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("imgs/icon.png"),
+                    fit: BoxFit.fitHeight),
+              ),
+            ),
+            SizedBox(width: 5),
+            Text("iCook"),
+          ],
+        ),
+        backgroundColor: Colors.black54,
+      ),
       body: SingleChildScrollView(
         child: Center(
           child: Form(
