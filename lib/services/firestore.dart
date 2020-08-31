@@ -4,6 +4,7 @@ import '../receita.dart';
 
 abstract class BaseFirestore {
   Future<DocumentReference> cadastrarReceita(Receita receita, String uid);
+  CollectionReference getCollection(String collectionName);
 }
 
 class Database implements BaseFirestore {
@@ -18,5 +19,9 @@ class Database implements BaseFirestore {
       "owner": uid,
       "imagem": receita.imagem != null ? receita.imagem : ''
     });
+  }
+
+  CollectionReference getCollection(String collectionName) {
+    return firestore.collection(collectionName);
   }
 }
