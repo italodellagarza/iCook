@@ -1,5 +1,6 @@
 import 'package:ICook/authentication.dart';
 import 'package:ICook/model/user.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:ICook/minhacontapage.dart';
 
@@ -13,6 +14,26 @@ class MainDrawerPage extends StatefulWidget {
 }
 
 class _MainDrawerPageState extends State<MainDrawerPage> {
+  String imageReference;
+
+  void getImageURL() async {
+    if (widget.user != null) {
+      StorageReference firebaseStorageRef =
+          FirebaseStorage.instance.ref().child(widget.user.avatar);
+      var reference = await firebaseStorageRef.getDownloadURL();
+      setState(() {
+        imageReference = reference;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getImageURL();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -35,13 +56,16 @@ class _MainDrawerPageState extends State<MainDrawerPage> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                          image: NetworkImage(
-                              'https://previews.123rf.com/images/dxinerz/dxinerz1508/dxinerz150800924/43773803-chef-cooking-cook-icon-vector-image-can-also-be-used-for-activities-suitable-for-use-on-web-apps-mob.jpg'),
+                          image: NetworkImage(imageReference != null
+                              ? imageReference
+                              : 'https://previews.123rf.com/images/dxinerz/dxinerz1508/dxinerz150800924/43773803-chef-cooking-cook-icon-vector-image-can-also-be-used-for-activities-suitable-for-use-on-web-apps-mob.jpg'),
                           fit: BoxFit.fill),
                     ),
                   ),
                   Text(
-                    "Usuário 1",
+                    widget.user != null
+                        ? '${widget.user.nome} ${widget.user.sobrenome}'
+                        : 'Usuário',
                     style: TextStyle(fontSize: 22, color: Colors.white),
                   ),
                   Text(
