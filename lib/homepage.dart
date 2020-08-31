@@ -1,6 +1,8 @@
 import 'package:ICook/model/user.dart';
 import 'package:ICook/personal_list.dart';
 import 'package:ICook/recipe_tile.dart';
+import 'package:ICook/services/firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'cadastrarreceitapage.dart';
@@ -21,6 +23,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
   Usuario user;
+  final firestore = new Database();
+  CollectionReference booksRef = new Database().getCollection('usuarios');
 
   AnimationController animationController;
   Animation degOneTranslationAnimation, degTwoTranslationAnimation;
@@ -58,14 +62,13 @@ class _MyHomePageState extends State<MyHomePage>
 
   void getUserInfo() async {
     var firebaseUser = await widget.auth.getCurrentUser();
-    print(firebaseUser);
+    var userSaved =
+        await firestore.getCollection('usuario').doc(firebaseUser.uid).get();
     setState(() {
-      user = new Usuario(
-          firebaseUser.email, firebaseUser.email, firebaseUser.email,
-          avatar: firebaseUser.email);
+      user = new Usuario(userSaved.data()['nome'],
+          userSaved.data()['sobrenome'], userSaved.data()['email'],
+          avatar: userSaved.data()['avatar']);
     });
-    // TODO: ajutar os dados do usuario
-    print(user);
   }
 
   @override
@@ -89,22 +92,34 @@ class _MyHomePageState extends State<MyHomePage>
         ),
         backgroundColor: Colors.black54,
       ),
-      drawer: MainDrawerPage(
-          user: user,
-          auth: widget.auth,
-          logoutCallback: widget.logoutCallback),
-      body: Container(
-        child: Stack(
-          children: <Widget>[
-            Container(
-              color: Colors.grey[300],
-              child: ListView(
-                children: <Widget>[
-                  RecipeTile(),
-                  RecipeTile(),
-                  RecipeTile(),
-                  RecipeTile(),
-                ],
+        drawer: MainDrawerPage(
+            user: user,
+            auth: widget.auth,
+            logoutCallback: widget.logoutCallback),
+        body: Container(
+          child: Stack(
+            children: <Widget>[
+              Container(
+                color: Colors.grey[300],
+                child: StreamBuilder(
+                    stream: firestore.getCollection('receita').snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) print('Error');
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
+                          return LinearProgressIndicator();
+                        default:
+                          return Container(
+                            child: ListView(
+                                children: snapshot.data.documents
+                                    .map<Widget>((DocumentSnapshot doc) {
+                              return RecipeTile(
+                                receita: doc.data(),
+                              );
+                            }).toList()),
+                          );
+                      }
+                    }),
               ),
             ),
             Positioned(
