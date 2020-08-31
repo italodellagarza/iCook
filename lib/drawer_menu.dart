@@ -1,12 +1,13 @@
 import 'package:ICook/authentication.dart';
-import 'package:ICook/loginsinguppage.dart';
 import 'package:ICook/model/user.dart';
 import 'package:flutter/material.dart';
+import 'package:ICook/minhacontapage.dart';
 
 class MainDrawerPage extends StatefulWidget {
-  MainDrawerPage({this.user, this.auth});
+  MainDrawerPage({this.user, this.auth, this.logoutCallback});
   final Usuario user;
   final Auth auth;
+  final logoutCallback;
   @override
   _MainDrawerPageState createState() => _MainDrawerPageState();
 }
@@ -62,12 +63,16 @@ class _MainDrawerPageState extends State<MainDrawerPage> {
               ),
             ),
             onTap: () {
-              //Navigator.push(
-              //  context,
-              //  MaterialPageRoute(builder: (BuildContext context) => CadastrarReceitasPage()),
-              //);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => MinhaContaPage(
+                          auth: widget.auth,
+                          user: widget.user,
+                        )),
+              );
               //Navigator.of(context).pop();
-              print("AAAAAAAAAAAAAAAAAAAAAAAA");
+              //print("AAAAAAAAAAAAAAAAAAAAAAAA");
             },
           ),
           ListTile(
@@ -79,12 +84,8 @@ class _MainDrawerPageState extends State<MainDrawerPage> {
               ),
             ),
             onTap: () {
-              widget.auth.signOut();
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => LoginSignupPage()),
-              );
+              widget.logoutCallback();
+              Navigator.pop(context);
             },
           ),
         ],
