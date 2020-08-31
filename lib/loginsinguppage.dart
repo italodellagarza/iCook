@@ -1,3 +1,4 @@
+import 'package:ICook/services/firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:ICook/authentication.dart';
@@ -15,6 +16,7 @@ class LoginSignupPage extends StatefulWidget {
 
 class _LoginSignupPageState extends State<LoginSignupPage> {
   final _formKey = GlobalKey<FormState>();
+  final firestore = new Database();
 
   String _email;
   String _password;
@@ -49,14 +51,14 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           Usuario usuario =
               new Usuario(_nomeUsuario, _sobrenomeUsuario, _email);
           userId = await widget.auth.signUp(_email, _password);
-          // TODO cadastrar instância no firabase usand  userId e usuario.
+          firestore.cadastrarUsuario(usuario, userId);
           print('Signed up user: $userId');
         }
         setState(() {
           _isLoading = false;
         });
 
-        if (userId.length > 0 && userId != null && _isLoginForm) {
+        if (userId.length > 0 && userId != null) {
           widget.loginCallback();
         }
       } catch (e) {
@@ -70,8 +72,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     }
     ;
     setState(() {
-      _isLoading:
-      false;
+      _isLoading = false;
     });
   }
 
