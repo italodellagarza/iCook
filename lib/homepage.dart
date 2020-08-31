@@ -61,19 +61,13 @@ class _MyHomePageState extends State<MyHomePage>
 
   void getUserInfo() async {
     var firebaseUser = await widget.auth.getCurrentUser();
+    var userSaved =
+        await firestore.getCollection('usuario').doc(firebaseUser.uid).get();
     setState(() {
-      user = new Usuario(
-          firebaseUser.email, firebaseUser.email, firebaseUser.email,
-          avatar: firebaseUser.email);
+      user = new Usuario(userSaved.data()['nome'],
+          userSaved.data()['sobrenome'], userSaved.data()['email'],
+          avatar: userSaved.data()['avatar']);
     });
-    // TODO: ajutar os dados do usuario
-    print(user);
-  }
-
-  Future<Map<String, dynamic>> getOwnerInfo(String uid) async {
-    var user = firestore.getCollection('usuario').doc(uid);
-    var owner = await user.get();
-    return owner.data();
   }
 
   @override

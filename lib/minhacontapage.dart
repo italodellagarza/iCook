@@ -1,9 +1,13 @@
+import 'package:ICook/services/firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:ICook/authentication.dart';
 import 'package:ICook/model/user.dart';
+import 'package:path/path.dart';
 
 class MinhaContaPage extends StatefulWidget {
   MinhaContaPage({this.user, this.auth});
@@ -16,6 +20,7 @@ class MinhaContaPage extends StatefulWidget {
 class _MinhaContaPageState extends State<MinhaContaPage> {
   final _formKey = GlobalKey<FormState>();
   final picker = ImagePicker();
+  final firestore = new Database();
   bool loading = false;
 
   TextEditingController campoNomeUsuarioController;
@@ -31,8 +36,9 @@ class _MinhaContaPageState extends State<MinhaContaPage> {
   void initState() {
     campoNomeUsuarioController = TextEditingController(text: widget.user.nome);
     campoSobrenomeUsuarioController =
-        TextEditingController(text: widget.user.nome);
-    campoEmailUsuarioController = TextEditingController(text: widget.user.nome);
+        TextEditingController(text: widget.user.sobrenome);
+    campoEmailUsuarioController =
+        TextEditingController(text: widget.user.email);
     super.initState();
   }
 
@@ -46,6 +52,20 @@ class _MinhaContaPageState extends State<MinhaContaPage> {
     }
   }
 
+  Future uploadImage() async {
+    String fileName = basename(_image.path);
+    StorageReference fStorageRef =
+        FirebaseStorage.instance.ref().child(fileName);
+    StorageUploadTask uploadTask = fStorageRef.putFile(_image);
+    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+    if (uploadTask.isComplete) {
+      print('Image uploaded');
+      widget.user.avatar = fileName;
+    }
+  }
+
+  void updateUser() {}
+
   void removeImage() {
     setState(() {
       _image = null;
@@ -53,14 +73,28 @@ class _MinhaContaPageState extends State<MinhaContaPage> {
   }
 
   void atualizarDados() async {
+    User firebaseUser = await widget.auth.getCurrentUser();
+
     if (_novaSenhaController.text.isNotEmpty) {
       // Atualizar senha do usuário no Firebase
+      // await atualiza senha
+      await firebaseUser.updatePassword(_novaSenhaController.text);
     }
 
+    if (_image != null) {
+      // Atualizar imagem no firebase
+      await uploadImage();
+    }
     widget.user.nome = campoNomeUsuarioController.text;
     widget.user.email = campoEmailUsuarioController.text;
-    widget.user.avatar = ""; // CADASTRAR IMAGEM NO FIREBASE
-    // Cadastrar user no firebase com o mesmo userId
+    firestore.cadastrarUsuario(widget.user, firebaseUser.uid);
+    // String displayName = "${widget.user.nome} ${widget.user.sobrenome}";
+    // firebaseUser.updateProfile(<String, String>{
+    //   "displayName": displayName,
+    //   "photoURL": widget.user.avatar
+    // });
+    firebaseUser.updateEmail(campoEmailUsuarioController.text);
+    firebaseUser.reload();
   }
 
   Widget _showCircularProgress() {
