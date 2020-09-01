@@ -1,3 +1,4 @@
+import 'package:ICook/telaexpandirreceita.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -111,8 +112,18 @@ class _RecipeTileState extends State<RecipeTile> {
               children: <Widget>[
                 FlatButton(
                   //playlist_add_check
-                  child: Icon(Icons.playlist_add, color: Colors.red, size: 40),
-                  onPressed: null,
+                  child: Icon(Icons.expand_more, color: Colors.red, size: 40),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => TelaExpandirReceita(
+                          receita: widget.receita,
+                          imageReference: imageReference,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
