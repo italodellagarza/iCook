@@ -12,16 +12,6 @@ class RecipeTilePersonalList extends StatefulWidget {
 }
 
 class _RecipeTilePersonalListState extends State<RecipeTilePersonalList> {
-  // String imageReference = "https://www.clicandoeandando.com/wp-content/uploads/2016/06/Como-tirar-fotos-melhores-com-qualquer-c%C3%A2mera-macro.jpg";
-  String imageReference;
-
-  void getImagePath(String fileName) async {
-    if (fileName != null) {
-      StorageReference firebaseStorageRef =
-          FirebaseStorage.instance.ref().child(fileName);
-      imageReference = await firebaseStorageRef.getDownloadURL();
-    }
-  }
 
   void carregarImagem(String fileName) async {
     if (fileName != null) {
@@ -42,8 +32,6 @@ class _RecipeTilePersonalListState extends State<RecipeTilePersonalList> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.receita['owner']);
-    // getImagePath(widget.receita['imagem']);
     return Card(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -52,7 +40,7 @@ class _RecipeTilePersonalListState extends State<RecipeTilePersonalList> {
             padding: EdgeInsets.all(10.0),
             child: Stack(
               children: <Widget>[
-                imageReference != null
+                widget.imageReference != null
                     ? Container(
                         height: 200,
                         child: CachedNetworkImage(
@@ -63,7 +51,7 @@ class _RecipeTilePersonalListState extends State<RecipeTilePersonalList> {
                                 image: DecorationImage(
                                     image: imageProvider, fit: BoxFit.cover)),
                           ),
-                          imageUrl: imageReference,
+                          imageUrl: widget.imageReference,
                           progressIndicatorBuilder:
                               (context, url, downloadProgress) =>
                                   CircularProgressIndicator(

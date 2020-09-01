@@ -131,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage>
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (BuildContext context) => PersonalListPage()),
+                  builder: (BuildContext context) => PersonalListPage(auth: widget.auth,)),
             );
           }
         },
