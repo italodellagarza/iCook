@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ICook/model/user.dart';
 
 class TelaExpandirReceita extends StatelessWidget {
-  TelaExpandirReceita({Key key, this.receita, this.imageReference});
+  TelaExpandirReceita(
+      {Key key,
+      this.receita,
+      this.imageReference,
+      this.imageReferenceUser,
+      this.owner});
   final receita;
   final imageReference;
+  final imageReferenceUser;
+  final Usuario owner;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,13 +38,14 @@ class TelaExpandirReceita extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            const ListTile(
+            ListTile(
               leading: CircleAvatar(
-                backgroundImage: NetworkImage(
-                    'https://previews.123rf.com/images/dxinerz/dxinerz1508/dxinerz150800924/43773803-chef-cooking-cook-icon-vector-image-can-also-be-used-for-activities-suitable-for-use-on-web-apps-mob.jpg'),
+                backgroundImage: NetworkImage(imageReferenceUser != null
+                    ? imageReferenceUser
+                    : 'https://previews.123rf.com/images/dxinerz/dxinerz1508/dxinerz150800924/43773803-chef-cooking-cook-icon-vector-image-can-also-be-used-for-activities-suitable-for-use-on-web-apps-mob.jpg'),
               ),
-              title: Text("Usuário 1"),
-              subtitle: Text("usuário1@gmail.com"),
+              title: Text(owner.nome),
+              subtitle: Text(owner.email),
               trailing: Icon(Icons.share),
             ),
             Container(

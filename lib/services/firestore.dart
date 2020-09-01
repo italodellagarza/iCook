@@ -22,7 +22,7 @@ class Database implements BaseFirestore {
       "tempo_preparo": receita.tempoPreparo,
       "modo_preparo": receita.modoDeFazer,
       "owner": uid,
-      "imagem": receita.imagem != null ? receita.imagem : ''
+      "imagem": receita.imagem != null ? receita.imagem : '44298.jpg'
     });
   }
 
