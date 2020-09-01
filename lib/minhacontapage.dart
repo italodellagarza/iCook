@@ -21,6 +21,7 @@ class _MinhaContaPageState extends State<MinhaContaPage> {
   final _formKey = GlobalKey<FormState>();
   final picker = ImagePicker();
   final firestore = new Database();
+  String imageReference;
   bool loading = false;
 
   TextEditingController campoNomeUsuarioController;
@@ -32,6 +33,24 @@ class _MinhaContaPageState extends State<MinhaContaPage> {
 
   File _image;
 
+  void getImagePath(String fileName) async {
+    if (fileName != null) {
+      StorageReference firebaseStorageRef =
+          FirebaseStorage.instance.ref().child(fileName);
+      imageReference = await firebaseStorageRef.getDownloadURL();
+    }
+  }
+
+  void carregarImagem(String fileName) async {
+    if (fileName != null) {
+      StorageReference firebaseStorageRef =
+          FirebaseStorage.instance.ref().child(fileName);
+      firebaseStorageRef
+          .getDownloadURL()
+          .then((value) => setState(() => imageReference = value));
+    }
+  }
+
   @override
   void initState() {
     campoNomeUsuarioController = TextEditingController(text: widget.user.nome);
@@ -40,6 +59,7 @@ class _MinhaContaPageState extends State<MinhaContaPage> {
     campoEmailUsuarioController =
         TextEditingController(text: widget.user.email);
     super.initState();
+    carregarImagem(widget.user.avatar);
   }
 
   Future getImage() async {
@@ -150,22 +170,19 @@ class _MinhaContaPageState extends State<MinhaContaPage> {
                       ),
                       Column(
                         children: <Widget>[
-                          if (_image != null) ...[
+                          if (_image != null || imageReference != null) ...[
                             Center(
                               child: CircleAvatar(
                                 radius: 100,
                                 backgroundColor: Colors.red,
                                 child: ClipOval(
                                   child: SizedBox(
-                                    width: 190,
-                                    height: 190,
-                                    child: (_image != null)
-                                        ? Image.file(_image, fit: BoxFit.fill)
-                                        : Image.network(
-                                            'gs://icook-gcc144.appspot.com/image_picker5940230501014420480.jpg',
-                                            fit: BoxFit.fill,
-                                          ),
-                                  ),
+                                      width: 190,
+                                      height: 190,
+                                      child: (_image != null)
+                                          ? Image.file(_image, fit: BoxFit.fill)
+                                          : Image.network(imageReference,
+                                              fit: BoxFit.fill)),
                                 ),
                               ),
                             )
