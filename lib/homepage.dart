@@ -71,6 +71,7 @@ class _MyHomePageState extends State<MyHomePage>
     });
   }
 
+  static int currItem = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,6 +94,49 @@ class _MyHomePageState extends State<MyHomePage>
       ),
       drawer: MainDrawerPage(
           user: user, auth: widget.auth, logoutCallback: widget.logoutCallback),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currItem,
+        //fixedColor: Colors.red,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.add,
+              color: Colors.green,
+              size: 50,
+            ),
+            title: Text(
+              "Cadastrar Receita",
+              style: TextStyle(color: Colors.green),
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.list,
+              color: Colors.black,
+              size: 50,
+            ),
+            title: Text(
+              "Minhas Receitas",
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+        ],
+        onTap: (int i) {
+          if (i == 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => CadastrarReceitasPage()),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => PersonalListPage()),
+            );
+          }
+        },
+      ),
       body: Container(
         child: Stack(
           children: <Widget>[
@@ -118,104 +162,6 @@ class _MyHomePageState extends State<MyHomePage>
                     }
                   }),
             ),
-          ],
-        ),
-      ),
-      //ListView.builder(
-      //  itemCount: items.count,
-      //  itemBuilder: (ctx, i) => ItemTile(items.byIndex(i)),
-      //),
-      floatingActionButton: Positioned(
-        right: 30,
-        bottom: 30,
-        child: Stack(
-          alignment: Alignment.bottomRight,
-          children: <Widget>[
-            IgnorePointer(
-              child: Container(
-                color: Colors.white
-                    .withOpacity(0.0), // comment or change to transparent color
-                height: 150.0,
-                width: 150.0,
-              ),
-            ),
-            Transform.translate(
-              offset: Offset.fromDirection(getRadiansFromDegree(270),
-                  degOneTranslationAnimation.value * 100),
-              child: Transform(
-                transform: Matrix4.rotationZ(
-                    getRadiansFromDegree(rotationAnimation.value))
-                  ..scale(degOneTranslationAnimation.value),
-                alignment: Alignment.center,
-                child: CircularButton(
-                  color: Colors.green,
-                  width: 50,
-                  height: 50,
-                  icon: Icon(
-                    Icons.add,
-                    color: Colors.white,
-                  ),
-                  onClick: () {
-                    animationController.reverse();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              CadastrarReceitasPage()),
-                    );
-                  },
-                ),
-              ),
-            ),
-            Transform.translate(
-              offset: Offset.fromDirection(getRadiansFromDegree(180),
-                  degTwoTranslationAnimation.value * 100),
-              child: Transform(
-                transform: Matrix4.rotationZ(
-                    getRadiansFromDegree(rotationAnimation.value))
-                  ..scale(degTwoTranslationAnimation.value),
-                alignment: Alignment.center,
-                child: CircularButton(
-                  color: Colors.black,
-                  width: 50,
-                  height: 50,
-                  icon: Icon(
-                    Icons.list,
-                    color: Colors.white,
-                  ),
-                  onClick: () {
-                    animationController.reverse();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              PersonalListPage()),
-                    );
-                  },
-                ),
-              ),
-            ),
-            Transform(
-              transform: Matrix4.rotationZ(
-                  getRadiansFromDegree(rotationAnimation.value)),
-              alignment: Alignment.center,
-              child: CircularButton(
-                color: Colors.red,
-                width: 60,
-                height: 60,
-                icon: Icon(
-                  Icons.menu,
-                  color: Colors.white,
-                ),
-                onClick: () {
-                  if (animationController.isCompleted) {
-                    animationController.reverse();
-                  } else {
-                    animationController.forward();
-                  }
-                },
-              ),
-            )
           ],
         ),
       ),

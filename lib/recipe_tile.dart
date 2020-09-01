@@ -112,7 +112,7 @@ class _RecipeTileState extends State<RecipeTile> {
               children: <Widget>[
                 FlatButton(
                   //playlist_add_check
-                  child: Icon(Icons.expand_more, color: Colors.red, size: 40),
+                  child: Text("EXPANDIR"),
                   onPressed: () {
                     Navigator.push(
                       context,
