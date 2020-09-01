@@ -1,3 +1,6 @@
+/// firestore.dart
+/// Responsável pela comunicação com o banco de dados do Firestore
+
 import 'package:ICook/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

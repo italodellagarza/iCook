@@ -56,18 +56,34 @@ class _RecipeTileState extends State<RecipeTile> {
             trailing: Icon(Icons.share),
           ),
           Container(
+            padding: EdgeInsets.all(10.0),
             child: Stack(
               children: <Widget>[
                 imageReference != null
-                    ? CachedNetworkImage(
-                        imageUrl: imageReference,
-                        progressIndicatorBuilder:
-                            (context, url, downloadProgress) =>
-                                CircularProgressIndicator(
-                                    value: downloadProgress.progress),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
+                    ? Container(
+                        height: 200,
+                        child: CachedNetworkImage(
+                          imageBuilder: (context, imageProvider) => Container(
+                            height: 200,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                    image: imageProvider, fit: BoxFit.cover)),
+                          ),
+                          imageUrl: imageReference,
+                          progressIndicatorBuilder:
+                              (context, url, downloadProgress) =>
+                                  CircularProgressIndicator(
+                                      value: downloadProgress.progress),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
+                        ),
                       )
                     : Container(
+                        constraints: BoxConstraints(
+                          minHeight: 200,
+                          maxHeight: 200,
+                        ),
                         height: 250,
                         child: Center(
                             child: SizedBox(
@@ -77,10 +93,11 @@ class _RecipeTileState extends State<RecipeTile> {
                         ))),
                 SizedBox(),
                 Container(
+                  padding: EdgeInsets.all(10),
                   color: Colors.black.withOpacity(
                       0.50), // comment or change to transparent color
-                  height: 30.0,
-                  width: 300.0,
+                  height: 50.0,
+                  width: double.infinity,
                   child: Text(
                     widget.receita['nome'],
                     style: TextStyle(fontSize: 22, color: Colors.white),
@@ -88,10 +105,6 @@ class _RecipeTileState extends State<RecipeTile> {
                 ),
               ],
             ),
-          ),
-          Container(
-            padding: EdgeInsets.all(10),
-            child: Text(widget.receita['modo_preparo']),
           ),
           ButtonTheme(
             child: ButtonBar(

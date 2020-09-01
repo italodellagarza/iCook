@@ -208,7 +208,7 @@ class _MinhaContaPageState extends State<MinhaContaPage> {
                       Padding(
                         padding: EdgeInsets.all(10.0),
                         child: TextFormField(
-                          controller: campoNomeUsuarioController,
+                          controller: campoSobrenomeUsuarioController,
                           decoration: InputDecoration(
                             labelText: "Sobrenome",
                             border: OutlineInputBorder(

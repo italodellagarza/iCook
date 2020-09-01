@@ -1,16 +1,24 @@
 # ICook
 
-A new Flutter project.
+[![Flutter version](https://img.shields.io/badge/Flutter-1.20.2-blue)](https://flutter.dev/docs/get-started/install)
 
-## Getting Started
+Trabalho da disciplina GCC114 - Desenvolvimento de Aplicativos para Dispositivos Móveis.
 
-This project is a starting point for a Flutter application.
+## Descrição
 
-A few resources to get you started if this is your first Flutter project:
+Este projeto se trata de uma rede social voltada para cozinheiros, pela qual é possível criar uma conta, alterar seus dados, postar suas receitas e visualizar as receitas dos outros usuários. Utiliza, para isso, o Firebase como sistema de armazenamento e autenticação.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Requisitos
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+É necessário ter o Java, o Flutter e o Android SDK instalados. Para mais informações sobre os pacotes que o programa usa, veja o arquivo `pubspec.yaml`.
+
+## Execução
+
+Para executar o arquivo basta configurar o Flutter, abrir a basta do projeto e executar no terminal:
+```
+$ flutter run
+```
+Caso queira verificar se as dependências estão corretamente configuradas, digite no terminal:
+```
+$ flutter doctor
+```
