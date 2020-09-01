@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ICook/receita.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class TelaExpandirReceita extends StatelessWidget {
   TelaExpandirReceita({Key key, this.receita, this.imageReference});
-  final Receita receita;
+  final receita;
   final imageReference;
   @override
   Widget build(BuildContext context) {
@@ -83,23 +82,57 @@ class TelaExpandirReceita extends StatelessWidget {
                     height: 50.0,
                     width: double.infinity,
                     child: Text(
-                      receita.nomeReceita,
+                      receita["nome"],
                       style: TextStyle(fontSize: 22, color: Colors.white),
                     ),
                   ),
                 ],
               ),
             ),
-            ButtonTheme(
-              child: ButtonBar(
-                children: <Widget>[
-                  FlatButton(
-                    //playlist_add_check
-                    child:
-                        Icon(Icons.playlist_add, color: Colors.red, size: 40),
-                    onPressed: null,
-                  ),
-                ],
+            SizedBox(),
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(10.0),
+              child: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      child: Text(
+                        "Modo de Preparo",
+                        style: TextStyle(fontSize: 22),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: Text(receita["modo_preparo"]),
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      child: Text(
+                        "Rendimento",
+                        style: TextStyle(fontSize: 22),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: Text(receita["rendimento"].toString()),
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      child: Text(
+                        "Tempo de Preparo",
+                        style: TextStyle(fontSize: 22),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: Text(receita["tempo_preparo"].toString()),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
