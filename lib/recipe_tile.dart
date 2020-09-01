@@ -12,7 +12,6 @@ class RecipeTile extends StatefulWidget {
 }
 
 class _RecipeTileState extends State<RecipeTile> {
-  // String imageReference = "https://www.clicandoeandando.com/wp-content/uploads/2016/06/Como-tirar-fotos-melhores-com-qualquer-c%C3%A2mera-macro.jpg";
   String imageReference;
 
   void getImagePath(String fileName) async {

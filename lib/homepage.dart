@@ -24,7 +24,6 @@ class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
   Usuario user;
   final firestore = new Database();
-  CollectionReference booksRef = new Database().getCollection('usuarios');
 
   AnimationController animationController;
   Animation degOneTranslationAnimation, degTwoTranslationAnimation;

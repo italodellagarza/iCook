@@ -1,13 +1,12 @@
 import 'package:ICook/cadastrarreceitapage.dart';
-import 'package:ICook/telaexpandirreceita.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class RecipeTilePersonalList extends StatefulWidget {
-  RecipeTilePersonalList({this.receita, this.owner});
+  RecipeTilePersonalList({this.receita});
   final receita;
-  final owner;
+  String imageReference;
   @override
   _RecipeTilePersonalListState createState() => _RecipeTilePersonalListState();
 }
@@ -30,13 +29,14 @@ class _RecipeTilePersonalListState extends State<RecipeTilePersonalList> {
           FirebaseStorage.instance.ref().child(fileName);
       firebaseStorageRef
           .getDownloadURL()
-          .then((value) => setState(() => imageReference = value));
+          .then((value) => setState(() => widget.imageReference = value));
     }
   }
 
   @override
   void initState() {
     // TODO: implement initState
+    super.initState();
     carregarImagem(widget.receita['imagem']);
   }
 

@@ -1,10 +1,10 @@
 import 'package:ICook/model/user.dart';
-import 'package:ICook/recipe_tile.dart';
+import 'package:ICook/services/firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'cadastrarreceitapage.dart';
 import 'circularButton.dart';
-import 'drawer_menu.dart';
 import 'recipe_tile_personal_list.dart';
 
 class PersonalListPage extends StatefulWidget {
@@ -20,93 +20,109 @@ class PersonalListPage extends StatefulWidget {
 
 class _PersonalListPageState extends State<PersonalListPage>
     with SingleTickerProviderStateMixin {
-  Usuario user;
+  String userUID;
+  final firestore = new Database();
 
   void getUserInfo() async {
     var firebaseUser = await widget.auth.getCurrentUser();
-    print(firebaseUser);
     setState(() {
-      user = new Usuario(
-          firebaseUser.email, firebaseUser.email, firebaseUser.email,
-          avatar: firebaseUser.email);
+      userUID = firebaseUser.uid;
     });
-    // TODO: ajutar os dados do usuario
-    print(user);
   }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUserInfo();
+  }
+
   @override
   Widget build(BuildContext context) {
+    print('usuario');
+    print(userUID);
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: <Widget>[
-            Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("imgs/icon.png"),
-                    fit: BoxFit.fitHeight),
-              ),
-            ),
-            SizedBox(width: 5),
-            Text("iCook"),
-          ],
-        ),
-        backgroundColor: Colors.black54,
-      ),
-      body: Container(
-        child: Stack(
-          children: <Widget>[
-            Container(
-              color: Colors.grey[300],
-              child: ListView(
-                children: <Widget>[
-                  Container(
-                    color: Colors.red.withOpacity(0.80), // comment or change to transparent color
-                    height: 50.0,
-                    width: 300.0,
-                    child: Center(
-                      child: Text("Minhas receitas", 
-                        style: TextStyle(fontSize: 22, color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  RecipeTilePersonalList(),
-                  RecipeTilePersonalList(),
-                  RecipeTilePersonalList(),
-                  RecipeTilePersonalList(),
-                ],
-              ),
-            ),
-            Positioned(
-              right: 30,
-              bottom: 30,
-              child: CircularButton(
-                color: Colors.green,
-                width: 50,
-                height: 50,
-                icon: Icon(
-                  Icons.add,
-                  color: Colors.white,
+        appBar: AppBar(
+          title: Row(
+            children: <Widget>[
+              Container(
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("imgs/icon.png"),
+                      fit: BoxFit.fitHeight),
                 ),
-                onClick: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                        CadastrarReceitasPage()
-                    ),
-                  );
-                },
               ),
-            ),
-          ],
+              SizedBox(width: 5),
+              Text("iCook"),
+            ],
+          ),
+          backgroundColor: Colors.black54,
         ),
-      )
-      //ListView.builder(
-      //  itemCount: items.count,
-      //  itemBuilder: (ctx, i) => ItemTile(items.byIndex(i)),
-      //),
-    );
+        body: Container(
+          child: Stack(
+            children: <Widget>[
+              Container(
+                  color: Colors.grey[300],
+                  child: userUID != null
+                      ? StreamBuilder(
+                          stream: firestore
+                              .getCollection('receita')
+                              .where("owner", isEqualTo: userUID)
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError)
+                              print('Error ao carregar as minhas receitas');
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.waiting:
+                                return LinearProgressIndicator();
+                              default:
+                                print(snapshot.data.documents.length);
+                                print(userUID);
+                                print(
+                                    snapshot.data.documents[0].data()['owner']);
+                                return Container(
+                                  child: ListView(
+                                      children: snapshot.data.documents
+                                          .map<Widget>((DocumentSnapshot doc) {
+                                    return RecipeTilePersonalList(
+                                      receita: doc.data(),
+                                    );
+                                  }).toList()),
+                                );
+                            }
+                          },
+                        )
+                      : LinearProgressIndicator()),
+              Positioned(
+                right: 30,
+                bottom: 30,
+                child: CircularButton(
+                  color: Colors.green,
+                  width: 50,
+                  height: 50,
+                  icon: Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                  onClick: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              CadastrarReceitasPage()),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        )
+        //ListView.builder(
+        //  itemCount: items.count,
+        //  itemBuilder: (ctx, i) => ItemTile(items.byIndex(i)),
+        //),
+        );
   }
 }
