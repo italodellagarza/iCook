@@ -1,11 +1,14 @@
-import 'package:ICook/services/firestore.dart';
+/// minha_conta_page.dart
+/// classes MinhaContaPage e _MinhaContaPageState.
+/// Responsável pela tela de alteração de dados de conta.
+
+import 'package:ICook/control/firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
-
 import 'package:image_picker/image_picker.dart';
-import 'package:ICook/authentication.dart';
+import 'package:ICook/control/authentication.dart';
 import 'package:ICook/model/user.dart';
 import 'package:path/path.dart';
 
@@ -68,7 +71,6 @@ class _MinhaContaPageState extends State<MinhaContaPage> {
       setState(() {
         _image = File(pickedFile.path);
       });
-      // uploadImage(context, receita);
     }
   }
 
@@ -79,7 +81,6 @@ class _MinhaContaPageState extends State<MinhaContaPage> {
     StorageUploadTask uploadTask = fStorageRef.putFile(_image);
     StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
     if (uploadTask.isComplete) {
-      print('Image uploaded');
       widget.user.avatar = fileName;
     }
   }
@@ -97,7 +98,6 @@ class _MinhaContaPageState extends State<MinhaContaPage> {
 
     if (_novaSenhaController.text.isNotEmpty) {
       // Atualizar senha do usuário no Firebase
-      // await atualiza senha
       await firebaseUser.updatePassword(_novaSenhaController.text);
     }
 
@@ -106,13 +106,9 @@ class _MinhaContaPageState extends State<MinhaContaPage> {
       await uploadImage();
     }
     widget.user.nome = campoNomeUsuarioController.text;
+    widget.user.sobrenome = campoSobrenomeUsuarioController.text;
     widget.user.email = campoEmailUsuarioController.text;
     firestore.cadastrarUsuario(widget.user, firebaseUser.uid);
-    // String displayName = "${widget.user.nome} ${widget.user.sobrenome}";
-    // firebaseUser.updateProfile(<String, String>{
-    //   "displayName": displayName,
-    //   "photoURL": widget.user.avatar
-    // });
     firebaseUser.updateEmail(campoEmailUsuarioController.text);
     firebaseUser.reload();
   }
@@ -129,7 +125,6 @@ class _MinhaContaPageState extends State<MinhaContaPage> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO
     return Scaffold(
       appBar: AppBar(
         title: Row(

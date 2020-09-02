@@ -1,3 +1,7 @@
+/// tela_expandir_receita.dart
+/// classe TelaExpandirReceita.
+/// Responsável pela tela que mostra a receita completa.
+
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ICook/model/user.dart';
@@ -47,7 +51,6 @@ class TelaExpandirReceita extends StatelessWidget {
                 ),
                 title: Text(owner.nome),
                 subtitle: Text(owner.email),
-                trailing: Icon(Icons.share),
               ),
               Container(
                 padding: EdgeInsets.all(10.0),
@@ -90,8 +93,7 @@ class TelaExpandirReceita extends StatelessWidget {
                     SizedBox(),
                     Container(
                       padding: EdgeInsets.all(10),
-                      color: Colors.black.withOpacity(
-                          0.50), // comment or change to transparent color
+                      color: Colors.black.withOpacity(0.50),
                       height: 50.0,
                       width: double.infinity,
                       child: Text(

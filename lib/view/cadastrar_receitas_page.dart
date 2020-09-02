@@ -1,11 +1,15 @@
+/// cadastrar_receitas_page.dart
+/// classes CadastrarReceitasPage e _CadastrarReceitasPageState.
+/// Responsável pela página de cadastro de receitas.
+
 import 'dart:io';
 
-import 'package:ICook/authentication.dart';
-import 'package:ICook/services/firestore.dart';
+import 'package:ICook/control/authentication.dart';
+import 'package:ICook/control/firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:ICook/receita.dart';
+import 'package:ICook/model/receita.dart';
 import 'package:path/path.dart';
 
 class CadastrarReceitasPage extends StatefulWidget {
@@ -94,8 +98,7 @@ class _CadastrarReceitasPageState extends State<CadastrarReceitasPage> {
               width: 40,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage("imgs/icon.png"),
-                    fit: BoxFit.fitHeight),
+                    image: AssetImage("imgs/icon.png"), fit: BoxFit.fitHeight),
               ),
             ),
             SizedBox(width: 5),

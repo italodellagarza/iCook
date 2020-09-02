@@ -1,12 +1,15 @@
+/// homepage.dart
+/// classes MyHomePage e _MyHomePageState.
+/// Responsável pela tela de página principal do aplicativo
+
 import 'package:ICook/model/user.dart';
-import 'package:ICook/personal_list.dart';
-import 'package:ICook/recipe_tile.dart';
-import 'package:ICook/services/firestore.dart';
+import 'package:ICook/view/personal_list.dart';
+import 'package:ICook/view/recipe_tile.dart';
+import 'package:ICook/control/firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import 'cadastrarreceitapage.dart';
-import 'circularButton.dart';
+import 'cadastrar_receitas_page.dart';
 import 'drawer_menu.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -25,38 +28,10 @@ class _MyHomePageState extends State<MyHomePage>
   Usuario user;
   final firestore = new Database();
 
-  AnimationController animationController;
-  Animation degOneTranslationAnimation, degTwoTranslationAnimation;
-  Animation rotationAnimation;
-
-  double getRadiansFromDegree(double degree) {
-    double unitRadian = 57.295779513;
-    return degree / unitRadian;
-  }
-
   @override
   void initState() {
-    animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 250));
-    degOneTranslationAnimation = TweenSequence([
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0.0, end: 1.2), weight: 75.0),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 1.2, end: 1.0), weight: 25.0),
-    ]).animate(animationController);
-    degTwoTranslationAnimation = TweenSequence([
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0.0, end: 1.75), weight: 35.0),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 1.75, end: 1.0), weight: 65.0),
-    ]).animate(animationController);
-    rotationAnimation = Tween<double>(begin: 180.0, end: 0.0).animate(
-        CurvedAnimation(parent: animationController, curve: Curves.easeOut));
-    super.initState();
-    animationController.addListener(() {
-      setState(() {});
-    });
     getUserInfo();
+    super.initState();
   }
 
   void getUserInfo() async {
@@ -131,7 +106,9 @@ class _MyHomePageState extends State<MyHomePage>
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (BuildContext context) => PersonalListPage(auth: widget.auth,)),
+                  builder: (BuildContext context) => PersonalListPage(
+                        auth: widget.auth,
+                      )),
             );
           }
         },

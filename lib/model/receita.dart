@@ -1,3 +1,7 @@
+/// receita.dart
+/// classe Receita.
+/// Responsável por instanciar as receitas
+
 class Receita {
   String nomeReceita;
   String modoDeFazer;

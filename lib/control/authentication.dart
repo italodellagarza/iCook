@@ -1,3 +1,7 @@
+/// authentication.dart
+/// classes BaseAuth e Auth.
+/// Responsável pela comunicação com o sistema de autenticação do Firebase.
+
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -13,7 +17,6 @@ abstract class BaseAuth {
   Future<void> signOut();
 
   Future<bool> isEmailVerified();
-
 }
 
 class Auth implements BaseAuth {

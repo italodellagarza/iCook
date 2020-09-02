@@ -1,8 +1,8 @@
-import 'package:ICook/telaexpandirreceita.dart';
+import 'package:ICook/view/tela_expandir_receita.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:ICook/services/firestore.dart';
+import 'package:ICook/control/firestore.dart';
 import 'package:ICook/model/user.dart';
 
 class RecipeTile extends StatefulWidget {
@@ -82,7 +82,6 @@ class _RecipeTileState extends State<RecipeTile> {
                     : 'https://previews.123rf.com/images/dxinerz/dxinerz1508/dxinerz150800924/43773803-chef-cooking-cook-icon-vector-image-can-also-be-used-for-activities-suitable-for-use-on-web-apps-mob.jpg')),
             title: Text(user.nome),
             subtitle: Text(user.email),
-            trailing: Icon(Icons.share),
           ),
           Container(
             padding: EdgeInsets.all(10.0),
@@ -123,8 +122,7 @@ class _RecipeTileState extends State<RecipeTile> {
                 SizedBox(),
                 Container(
                   padding: EdgeInsets.all(10),
-                  color: Colors.black.withOpacity(
-                      0.50), // comment or change to transparent color
+                  color: Colors.black.withOpacity(0.50),
                   height: 50.0,
                   width: double.infinity,
                   child: Text(
@@ -139,7 +137,6 @@ class _RecipeTileState extends State<RecipeTile> {
             child: ButtonBar(
               children: <Widget>[
                 FlatButton(
-                  //playlist_add_check
                   child: Text("EXPANDIR"),
                   onPressed: () {
                     Navigator.push(

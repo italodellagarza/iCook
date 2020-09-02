@@ -1,8 +1,13 @@
-import 'package:ICook/authentication.dart';
+/// drawer_menu.dart
+/// classes MainDrawerPage e _MainDrawerPageState.
+/// Responsável pelo menu acessível pelo canto superior direito da tela na
+/// homepage.
+
+import 'package:ICook/control/authentication.dart';
 import 'package:ICook/model/user.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:ICook/minhacontapage.dart';
+import 'package:ICook/view/minha_conta_page.dart';
 
 class MainDrawerPage extends StatefulWidget {
   MainDrawerPage({this.user, this.auth, this.logoutCallback});

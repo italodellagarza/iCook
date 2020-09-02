@@ -1,7 +1,11 @@
-import 'package:ICook/services/firestore.dart';
+/// login_singup_page.dart
+/// classes LoginSingupPage e _LoginSingupPageState.
+/// Responsável pelas telas de cadastro de conta e login.
+
+import 'package:ICook/control/firestore.dart';
 import 'package:flutter/material.dart';
 
-import 'package:ICook/authentication.dart';
+import 'package:ICook/control/authentication.dart';
 import 'package:ICook/model/user.dart';
 
 class LoginSignupPage extends StatefulWidget {

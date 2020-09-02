@@ -1,11 +1,13 @@
+/// root_page.dart
+/// classes RootPage e RootPageState.
+/// Responsável por verificar se há um usuário já autenticado ou não e
+/// redirecionar corretamente para a pagina de login ou para a homepage.
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/services.dart';
-
 import 'authentication.dart';
-import 'package:ICook/homepage.dart';
-import 'package:ICook/loginsinguppage.dart';
-import 'package:ICook/cadastrarreceitapage.dart';
+import 'package:ICook/view/homepage.dart';
+import 'package:ICook/view/login_singup_page.dart';
 
 enum AuthStatus {
   NOT_DETERMINED,
@@ -15,9 +17,7 @@ enum AuthStatus {
 
 class RootPage extends StatefulWidget {
   RootPage({this.auth});
-
   final BaseAuth auth;
-
   @override
   State<StatefulWidget> createState() => _RootPageState();
 }

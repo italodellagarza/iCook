@@ -1,10 +1,11 @@
 /// firestore.dart
-/// Responsável pela comunicação com o banco de dados do Firestore
+/// classes BaseFirestore e Database.
+/// Responsável pela comunicação com o banco de dados do Firestore.
 
 import 'package:ICook/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../receita.dart';
+import '../model/receita.dart';
 
 abstract class BaseFirestore {
   Future<DocumentReference> cadastrarReceita(Receita receita, String uid);

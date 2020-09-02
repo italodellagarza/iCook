@@ -1,9 +1,13 @@
-import 'package:ICook/telaexpandirreceita.dart';
+/// receita.dart
+/// classes RecipeTilePersonalList e _RecipeTilePersonalListState.
+/// Responsável pelo componente da lista de receitas da tela de "minhas receitas".
+
+import 'package:ICook/view/tela_expandir_receita.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:ICook/model/user.dart';
-import 'package:ICook/services/firestore.dart';
+import 'package:ICook/control/firestore.dart';
 
 class RecipeTilePersonalList extends StatefulWidget {
   RecipeTilePersonalList({this.receita, this.imageReference});
@@ -54,7 +58,6 @@ class _RecipeTilePersonalListState extends State<RecipeTilePersonalList> {
 
   @override
   void initState() {
-    // TODO: implement initState
     carregarImagem(widget.receita['imagem']);
     getOwnerInfo();
     super.initState();
@@ -105,8 +108,7 @@ class _RecipeTilePersonalListState extends State<RecipeTilePersonalList> {
                 SizedBox(),
                 Container(
                   padding: EdgeInsets.all(10),
-                  color: Colors.black.withOpacity(
-                      0.50), // comment or change to transparent color
+                  color: Colors.black.withOpacity(0.50),
                   height: 50.0,
                   width: double.infinity,
                   child: Text(
@@ -121,7 +123,6 @@ class _RecipeTilePersonalListState extends State<RecipeTilePersonalList> {
             child: ButtonBar(
               children: <Widget>[
                 FlatButton(
-                  //playlist_add_check
                   child: Text("EXPANDIR"),
                   onPressed: () {
                     Navigator.push(

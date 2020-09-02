@@ -1,14 +1,16 @@
+/// main.dart
+/// classe MyApp.
+/// Responsável por inicializar o aplicativo e encaminhar para a Splash Screen.
+
 import 'package:flutter/material.dart';
-import 'package:ICook/splashscreen.dart';
+import 'package:ICook/view/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-// ignore: must_be_immutable
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,11 +20,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.red,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      // home: SplashScreen(),
       home: FutureBuilder(
         future: Firebase.initializeApp(),
         builder: (context, snapshot) {
-          print('to inicializando');
           return SplashScreen();
         },
       ),
