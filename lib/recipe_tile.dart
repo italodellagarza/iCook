@@ -7,6 +7,8 @@ import 'package:ICook/telaexpandirreceita.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:ICook/services/firestore.dart';
+import 'package:ICook/model/user.dart';
 
 class RecipeTile extends StatefulWidget {
   RecipeTile({this.receita, this.owner});
@@ -18,6 +20,9 @@ class RecipeTile extends StatefulWidget {
 
 class _RecipeTileState extends State<RecipeTile> {
   String imageReference;
+  String imageReferenceUser;
+  final firestore = new Database();
+  Usuario user = Usuario("Usuario1", "usuario1@gmail.com", "");
 
   void getImagePath(String fileName) async {
     if (fileName != null) {
@@ -37,9 +42,35 @@ class _RecipeTileState extends State<RecipeTile> {
     }
   }
 
+  void getImageUser() async {
+    if (user != null) {
+      StorageReference firebaseStorageRef =
+          FirebaseStorage.instance.ref().child(user.avatar);
+      var reference = await firebaseStorageRef.getDownloadURL();
+      setState(() {
+        imageReferenceUser = reference;
+      });
+    }
+  }
+
+  void getOwnerInfo() async {
+    var userSaved = await firestore
+        .getCollection('usuario')
+        .doc(widget.receita["owner"])
+        .get();
+    setState(() {
+      user = new Usuario(userSaved.data()['nome'],
+          userSaved.data()['sobrenome'], userSaved.data()['email'],
+          avatar: userSaved.data()['avatar']);
+    });
+    getImageUser();
+  }
+
   @override
   void initState() {
     carregarImagem(widget.receita['imagem']);
+    getOwnerInfo();
+    super.initState();
   }
 
   @override
@@ -48,13 +79,13 @@ class _RecipeTileState extends State<RecipeTile> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          const ListTile(
+          ListTile(
             leading: CircleAvatar(
-              backgroundImage: NetworkImage(
-                  'https://previews.123rf.com/images/dxinerz/dxinerz1508/dxinerz150800924/43773803-chef-cooking-cook-icon-vector-image-can-also-be-used-for-activities-suitable-for-use-on-web-apps-mob.jpg'),
-            ),
-            title: Text("Usuário 1"),
-            subtitle: Text("usuário1@gmail.com"),
+                backgroundImage: NetworkImage(imageReferenceUser != null
+                    ? imageReferenceUser
+                    : 'https://previews.123rf.com/images/dxinerz/dxinerz1508/dxinerz150800924/43773803-chef-cooking-cook-icon-vector-image-can-also-be-used-for-activities-suitable-for-use-on-web-apps-mob.jpg')),
+            title: Text(user.nome),
+            subtitle: Text(user.email),
           ),
           Container(
             padding: EdgeInsets.all(10.0),
@@ -123,6 +154,8 @@ class _RecipeTileState extends State<RecipeTile> {
                         builder: (BuildContext context) => TelaExpandirReceita(
                           receita: widget.receita,
                           imageReference: imageReference,
+                          imageReferenceUser: imageReferenceUser,
+                          owner: user,
                         ),
                       ),
                     );

@@ -4,12 +4,15 @@
 */
 
 import 'package:ICook/cadastrarreceitapage.dart';
+import 'package:ICook/telaexpandirreceita.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:ICook/model/user.dart';
+import 'package:ICook/services/firestore.dart';
 
 class RecipeTilePersonalList extends StatefulWidget {
-  RecipeTilePersonalList({this.receita});
+  RecipeTilePersonalList({this.receita, this.imageReference});
   final receita;
   String imageReference;
   @override
@@ -17,6 +20,33 @@ class RecipeTilePersonalList extends StatefulWidget {
 }
 
 class _RecipeTilePersonalListState extends State<RecipeTilePersonalList> {
+  Usuario user = Usuario("Usuario1", "usuario1@gmail.com", "");
+  String imageReferenceUser;
+  final firestore = new Database();
+
+  void getImageUser() async {
+    if (user != null) {
+      StorageReference firebaseStorageRef =
+          FirebaseStorage.instance.ref().child(user.avatar);
+      var reference = await firebaseStorageRef.getDownloadURL();
+      setState(() {
+        imageReferenceUser = reference;
+      });
+    }
+  }
+
+  void getOwnerInfo() async {
+    var userSaved = await firestore
+        .getCollection('usuario')
+        .doc(widget.receita["owner"])
+        .get();
+    setState(() {
+      user = new Usuario(userSaved.data()['nome'],
+          userSaved.data()['sobrenome'], userSaved.data()['email'],
+          avatar: userSaved.data()['avatar']);
+    });
+    getImageUser();
+  }
 
   void carregarImagem(String fileName) async {
     if (fileName != null) {
@@ -32,6 +62,8 @@ class _RecipeTilePersonalListState extends State<RecipeTilePersonalList> {
   void initState() {
     super.initState();
     carregarImagem(widget.receita['imagem']);
+    getOwnerInfo();
+    super.initState();
   }
 
   @override
@@ -98,13 +130,18 @@ class _RecipeTilePersonalListState extends State<RecipeTilePersonalList> {
             child: ButtonBar(
               children: <Widget>[
                 FlatButton(
-                  child: Icon(Icons.playlist_add, color: Colors.red, size: 40),
+                  //playlist_add_check
+                  child: Text("EXPANDIR"),
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            CadastrarReceitasPage(),
+                        builder: (BuildContext context) => TelaExpandirReceita(
+                          receita: widget.receita,
+                          imageReferenceUser: imageReferenceUser,
+                          imageReference: widget.imageReference,
+                          owner: user,
+                        ),
                       ),
                     );
                   },
