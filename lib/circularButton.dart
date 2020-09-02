@@ -1,3 +1,8 @@
+/*
+  Componente: botão, feito de forma personalizada.
+*/
+
+
 import 'package:flutter/material.dart';
 
 class CircularButton extends StatelessWidget {

@@ -1,3 +1,9 @@
+/*
+  Componente: menu lateral, para o usuário poder visualizar sua conta 
+  e fazer o logout do aplicativo.
+*/
+
+
 import 'package:ICook/authentication.dart';
 import 'package:ICook/model/user.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -29,7 +35,6 @@ class _MainDrawerPageState extends State<MainDrawerPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getImageURL();
   }
@@ -56,16 +61,16 @@ class _MainDrawerPageState extends State<MainDrawerPage> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                          image: NetworkImage(imageReference != null
-                              ? imageReference
-                              : 'https://previews.123rf.com/images/dxinerz/dxinerz1508/dxinerz150800924/43773803-chef-cooking-cook-icon-vector-image-can-also-be-used-for-activities-suitable-for-use-on-web-apps-mob.jpg'),
-                          fit: BoxFit.fill),
+                        image: NetworkImage(imageReference != null
+                            ? imageReference
+                            : 'https://previews.123rf.com/images/dxinerz/dxinerz1508/dxinerz150800924/43773803-chef-cooking-cook-icon-vector-image-can-also-be-used-for-activities-suitable-for-use-on-web-apps-mob.jpg'),
+                        fit: BoxFit.fill),
                     ),
                   ),
                   Text(
                     widget.user != null
-                        ? '${widget.user.nome} ${widget.user.sobrenome}'
-                        : 'Usuário',
+                      ? '${widget.user.nome} ${widget.user.sobrenome}'
+                      : 'Usuário',
                     style: TextStyle(fontSize: 22, color: Colors.white),
                   ),
                   Text(
@@ -90,13 +95,12 @@ class _MainDrawerPageState extends State<MainDrawerPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (BuildContext context) => MinhaContaPage(
-                          auth: widget.auth,
-                          user: widget.user,
-                        )),
+                  builder: (BuildContext context) => MinhaContaPage(
+                    auth: widget.auth,
+                    user: widget.user,
+                  ),
+                ),
               );
-              //Navigator.of(context).pop();
-              //print("AAAAAAAAAAAAAAAAAAAAAAAA");
             },
           ),
           ListTile(

@@ -1,3 +1,7 @@
+/*
+  Tela que mostra todas as informações presentes em uma receita.
+*/
+
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -43,42 +47,43 @@ class TelaExpandirReceita extends StatelessWidget {
               child: Stack(
                 children: <Widget>[
                   imageReference != null
-                      ? Container(
-                          height: 200,
-                          child: CachedNetworkImage(
-                            imageBuilder: (context, imageProvider) => Container(
-                              height: 200,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  image: DecorationImage(
-                                      image: imageProvider, fit: BoxFit.cover)),
-                            ),
-                            imageUrl: imageReference,
-                            progressIndicatorBuilder:
-                                (context, url, downloadProgress) =>
-                                    CircularProgressIndicator(
-                                        value: downloadProgress.progress),
-                            errorWidget: (context, url, error) =>
-                                Icon(Icons.error),
-                          ),
-                        )
-                      : Container(
-                          constraints: BoxConstraints(
-                            minHeight: 200,
-                            maxHeight: 200,
-                          ),
-                          height: 250,
-                          child: Center(
-                              child: SizedBox(
-                            height: 50,
-                            width: 50,
-                            child: CircularProgressIndicator(),
-                          ))),
+                  ? Container(
+                    height: 200,
+                    child: CachedNetworkImage(
+                      imageBuilder: (context, imageProvider) => Container(
+                        height: 200,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            image: DecorationImage(
+                                image: imageProvider, fit: BoxFit.cover)),
+                      ),
+                      imageUrl: imageReference,
+                      progressIndicatorBuilder:
+                        (context, url, downloadProgress) =>
+                          CircularProgressIndicator(
+                            value: downloadProgress.progress),
+                          errorWidget: (context, url, error) =>
+                            Icon(Icons.error),
+                    ),
+                  )
+                  : Container(
+                      constraints: BoxConstraints(
+                        minHeight: 200,
+                        maxHeight: 200,
+                      ),
+                      height: 250,
+                      child: Center(
+                          child: SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  ),
                   SizedBox(),
                   Container(
                     padding: EdgeInsets.all(10),
-                    color: Colors.black.withOpacity(
-                        0.50), // comment or change to transparent color
+                    color: Colors.black.withOpacity(0.50),
                     height: 50.0,
                     width: double.infinity,
                     child: Text(

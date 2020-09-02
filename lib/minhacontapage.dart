@@ -1,3 +1,7 @@
+/*
+  Tela para vizualizar os dados pessoais da conta, tendo a possibilidade de edita-los.
+*/
+
 import 'package:ICook/services/firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -44,10 +48,10 @@ class _MinhaContaPageState extends State<MinhaContaPage> {
   void carregarImagem(String fileName) async {
     if (fileName != null) {
       StorageReference firebaseStorageRef =
-          FirebaseStorage.instance.ref().child(fileName);
+        FirebaseStorage.instance.ref().child(fileName);
       firebaseStorageRef
-          .getDownloadURL()
-          .then((value) => setState(() => imageReference = value));
+        .getDownloadURL()
+        .then((value) => setState(() => imageReference = value));
     }
   }
 
@@ -55,9 +59,9 @@ class _MinhaContaPageState extends State<MinhaContaPage> {
   void initState() {
     campoNomeUsuarioController = TextEditingController(text: widget.user.nome);
     campoSobrenomeUsuarioController =
-        TextEditingController(text: widget.user.sobrenome);
+      TextEditingController(text: widget.user.sobrenome);
     campoEmailUsuarioController =
-        TextEditingController(text: widget.user.email);
+      TextEditingController(text: widget.user.email);
     super.initState();
     carregarImagem(widget.user.avatar);
   }
@@ -67,19 +71,17 @@ class _MinhaContaPageState extends State<MinhaContaPage> {
     if (pickedFile.path != null) {
       setState(() {
         _image = File(pickedFile.path);
-      });
-      // uploadImage(context, receita);
+      },);
     }
   }
 
   Future uploadImage() async {
     String fileName = basename(_image.path);
     StorageReference fStorageRef =
-        FirebaseStorage.instance.ref().child(fileName);
+      FirebaseStorage.instance.ref().child(fileName);
     StorageUploadTask uploadTask = fStorageRef.putFile(_image);
     StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
     if (uploadTask.isComplete) {
-      print('Image uploaded');
       widget.user.avatar = fileName;
     }
   }
@@ -96,23 +98,15 @@ class _MinhaContaPageState extends State<MinhaContaPage> {
     User firebaseUser = await widget.auth.getCurrentUser();
 
     if (_novaSenhaController.text.isNotEmpty) {
-      // Atualizar senha do usuário no Firebase
-      // await atualiza senha
       await firebaseUser.updatePassword(_novaSenhaController.text);
     }
 
     if (_image != null) {
-      // Atualizar imagem no firebase
       await uploadImage();
     }
     widget.user.nome = campoNomeUsuarioController.text;
     widget.user.email = campoEmailUsuarioController.text;
     firestore.cadastrarUsuario(widget.user, firebaseUser.uid);
-    // String displayName = "${widget.user.nome} ${widget.user.sobrenome}";
-    // firebaseUser.updateProfile(<String, String>{
-    //   "displayName": displayName,
-    //   "photoURL": widget.user.avatar
-    // });
     firebaseUser.updateEmail(campoEmailUsuarioController.text);
     firebaseUser.reload();
   }
@@ -129,7 +123,6 @@ class _MinhaContaPageState extends State<MinhaContaPage> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -207,7 +200,6 @@ class _MinhaContaPageState extends State<MinhaContaPage> {
                           )),
                         ],
                       ),
-                      //Nome
                       Padding(
                         padding: EdgeInsets.all(10.0),
                         child: TextFormField(
@@ -287,7 +279,6 @@ class _MinhaContaPageState extends State<MinhaContaPage> {
                       ),
 
                       Padding(
-                          //Botão primário
                           padding: EdgeInsets.all(10.0),
                           child: SizedBox(
                             width: double.infinity,

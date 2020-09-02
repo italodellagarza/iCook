@@ -1,3 +1,7 @@
+/*
+  Responsável por armazenar os dados da receita, sendo interligada ao Firebase.
+*/
+
 class Receita {
   String nomeReceita;
   String modoDeFazer;

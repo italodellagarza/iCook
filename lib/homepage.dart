@@ -1,3 +1,10 @@
+/*
+  Tela, no qual, serão postadas todas as receitas do aplicativo, considerando as
+  receitas de cada usuário.
+  Por esta tela, o usuário pode inserir uma nova receita, ir para a lista de receitas 
+  pessoal, verificar sua conta e fazer o logout do apilicativo.
+*/
+
 import 'package:ICook/model/user.dart';
 import 'package:ICook/personal_list.dart';
 import 'package:ICook/recipe_tile.dart';
@@ -6,7 +13,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'cadastrarreceitapage.dart';
-import 'circularButton.dart';
 import 'drawer_menu.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -24,40 +30,6 @@ class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
   Usuario user;
   final firestore = new Database();
-
-  AnimationController animationController;
-  Animation degOneTranslationAnimation, degTwoTranslationAnimation;
-  Animation rotationAnimation;
-
-  double getRadiansFromDegree(double degree) {
-    double unitRadian = 57.295779513;
-    return degree / unitRadian;
-  }
-
-  @override
-  void initState() {
-    animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 250));
-    degOneTranslationAnimation = TweenSequence([
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0.0, end: 1.2), weight: 75.0),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 1.2, end: 1.0), weight: 25.0),
-    ]).animate(animationController);
-    degTwoTranslationAnimation = TweenSequence([
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0.0, end: 1.75), weight: 35.0),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 1.75, end: 1.0), weight: 65.0),
-    ]).animate(animationController);
-    rotationAnimation = Tween<double>(begin: 180.0, end: 0.0).animate(
-        CurvedAnimation(parent: animationController, curve: Curves.easeOut));
-    super.initState();
-    animationController.addListener(() {
-      setState(() {});
-    });
-    getUserInfo();
-  }
 
   void getUserInfo() async {
     var firebaseUser = await widget.auth.getCurrentUser();
@@ -95,7 +67,6 @@ class _MyHomePageState extends State<MyHomePage>
           user: user, auth: widget.auth, logoutCallback: widget.logoutCallback),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currItem,
-        //fixedColor: Colors.red,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
@@ -142,24 +113,25 @@ class _MyHomePageState extends State<MyHomePage>
             Container(
               color: Colors.grey[300],
               child: StreamBuilder(
-                  stream: firestore.getCollection('receita').snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) print('Error');
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
-                        return LinearProgressIndicator();
-                      default:
-                        return Container(
-                          child: ListView(
-                              children: snapshot.data.documents
-                                  .map<Widget>((DocumentSnapshot doc) {
-                            return RecipeTile(
-                              receita: doc.data(),
-                            );
-                          }).toList()),
-                        );
-                    }
-                  }),
+                stream: firestore.getCollection('receita').snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) print('Error');
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return LinearProgressIndicator();
+                    default:
+                      return Container(
+                        child: ListView(
+                            children: snapshot.data.documents
+                                .map<Widget>((DocumentSnapshot doc) {
+                          return RecipeTile(
+                            receita: doc.data(),
+                          );
+                        }).toList()),
+                      );
+                  }
+                },
+              ),
             ),
           ],
         ),

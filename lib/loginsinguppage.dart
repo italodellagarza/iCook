@@ -1,3 +1,7 @@
+/*
+  Tela para fazer o login e entrar no aplicativo. Também sendo possível criar uma conta.
+*/
+
 import 'package:ICook/services/firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -46,13 +50,11 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       try {
         if (_isLoginForm) {
           userId = await widget.auth.signIn(_email, _password);
-          print('Signed in: $userId');
         } else {
           Usuario usuario =
               new Usuario(_nomeUsuario, _sobrenomeUsuario, _email);
           userId = await widget.auth.signUp(_email, _password);
           firestore.cadastrarUsuario(usuario, userId);
-          print('Signed up user: $userId');
         }
         setState(() {
           _isLoading = false;
@@ -134,21 +136,22 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       return Padding(
         padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
         child: TextFormField(
-            maxLines: 1,
-            autofocus: false,
-            decoration: InputDecoration(
-                hintText: 'Seu nome',
-                icon: Icon(
-                  Icons.person,
-                  color: Colors.grey,
-                )),
-            validator: (value) =>
-                value.isEmpty ? 'O seu nome não pode estar vazio.' : null,
-            onSaved: (value) {
-              setState(() {
-                _nomeUsuario = value.trim();
-              });
-            }),
+          maxLines: 1,
+          autofocus: false,
+          decoration: InputDecoration(
+              hintText: 'Seu nome',
+              icon: Icon(
+                Icons.person,
+                color: Colors.grey,
+              )),
+          validator: (value) =>
+              value.isEmpty ? 'O seu nome não pode estar vazio.' : null,
+          onSaved: (value) {
+            setState(() {
+              _nomeUsuario = value.trim();
+            });
+          },
+        ),
       );
     } else {
       return Padding(padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0));
@@ -263,15 +266,15 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.fromLTRB(
-                                  0.0, 30.0, 0.0, 0.0),
+                                0.0, 30.0, 0.0, 0.0),
                               child: Text('LOGIN',
-                                  style: TextStyle(
-                                      fontSize: 30.0, color: Colors.red)),
+                                style: TextStyle(
+                                  fontSize: 30.0, color: Colors.red),
+                                ),
                             ),
                             _showUserNameField(),
                             _showUserSurnameField(),
                             Padding(
-                              //Campo de email
                               padding: const EdgeInsets.fromLTRB(
                                   0.0, 15.0, 0.0, 0.0),
                               child: TextFormField(
@@ -279,14 +282,14 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                                 keyboardType: TextInputType.emailAddress,
                                 autofocus: false,
                                 decoration: InputDecoration(
-                                    hintText: 'e-mail',
-                                    icon: Icon(
-                                      Icons.mail,
-                                      color: Colors.grey,
-                                    )),
+                                  hintText: 'e-mail',
+                                  icon: Icon(
+                                    Icons.mail,
+                                    color: Colors.grey,
+                                  )),
                                 validator: (value) => value.isEmpty
-                                    ? 'O e-mail não pode ser vazio'
-                                    : null,
+                                  ? 'O e-mail não pode ser vazio'
+                                  : null,
                                 onSaved: (value) {
                                   setState(() {
                                     _email = value.trim();
@@ -295,60 +298,60 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                               ),
                             ),
                             Padding(
-                              //Campo de senha
                               padding: const EdgeInsets.fromLTRB(
                                   0.0, 15.0, 0.0, 0.0),
                               child: TextFormField(
-                                  maxLines: 1,
-                                  obscureText: true,
-                                  autofocus: false,
-                                  decoration: InputDecoration(
-                                      hintText: 'Senha de 6 digitos',
-                                      icon: Icon(
-                                        Icons.lock,
-                                        color: Colors.grey,
-                                      )),
-                                  validator: (value) => value.isEmpty
-                                      ? 'A senha não pode ser vazia'
-                                      : null,
-                                  onSaved: (value) {
-                                    setState(() {
-                                      _password = value.trim();
-                                    });
-                                  }),
+                                maxLines: 1,
+                                obscureText: true,
+                                autofocus: false,
+                                decoration: InputDecoration(
+                                  hintText: 'Senha de 6 digitos',
+                                  icon: Icon(
+                                    Icons.lock,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                validator: (value) => value.isEmpty
+                                  ? 'A senha não pode ser vazia'
+                                  : null,
+                                onSaved: (value) {
+                                  setState(() {
+                                    _password = value.trim();
+                                  });
+                                },
+                              ),
                             ),
                             Padding(
-                                //Botão primário
-                                padding:
-                                    EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
-                                child: SizedBox(
-                                  width: double.infinity,
-                                  height: 50,
-                                  child: RaisedButton(
-                                    elevation: 5.0,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(30.0)),
-                                    color: Colors.blue,
-                                    child: Text(
-                                      _isLoginForm ? 'Login' : 'Criar conta',
-                                      style: TextStyle(
-                                          fontSize: 20.0, color: Colors.white),
-                                    ),
-                                    onPressed: validateAndSubmit,
+                              padding:
+                                EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+                              child: SizedBox(
+                                width: double.infinity,
+                                height: 50,
+                                child: RaisedButton(
+                                  elevation: 5.0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                      BorderRadius.circular(30.0)),
+                                  color: Colors.blue,
+                                  child: Text(
+                                    _isLoginForm ? 'Login' : 'Criar conta',
+                                    style: TextStyle(
+                                      fontSize: 20.0, color: Colors.white),
                                   ),
-                                )),
+                                  onPressed: validateAndSubmit,
+                                ),
+                              ),
+                            ),
                             Padding(
                               padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
                               child: FlatButton(
-                                //Botão secundário
                                 child: Text(
                                   _isLoginForm
-                                      ? 'Criar uma conta'
-                                      : 'Tem uma conta? Entrar',
+                                    ? 'Criar uma conta'
+                                    : 'Tem uma conta? Entrar',
                                   style: TextStyle(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.w300),
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w300),
                                 ),
                                 onPressed: toggleFormMode,
                               ),
@@ -372,10 +375,10 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       return Text(
         _errorMessage,
         style: TextStyle(
-            fontSize: 30.0,
-            color: Colors.red,
-            height: 1.0,
-            fontWeight: FontWeight.w300),
+          fontSize: 30.0,
+          color: Colors.red,
+          height: 1.0,
+          fontWeight: FontWeight.w300),
       );
     } else {
       return Container(

@@ -1,3 +1,8 @@
+/*
+  Responsável por certificar das autenticações do login de usuário.
+*/
+
+
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 

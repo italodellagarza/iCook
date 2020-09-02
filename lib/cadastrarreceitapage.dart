@@ -1,3 +1,7 @@
+/*
+  Tela responsável por cuidar do cadastro de uma receita.
+*/
+
 import 'dart:io';
 
 import 'package:ICook/authentication.dart';
@@ -40,19 +44,19 @@ class _CadastrarReceitasPageState extends State<CadastrarReceitasPage> {
       loading = false;
     });
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Sucesso!'),
-            content: Text('Sua receita foi publicada com sucesso!'),
-            actions: <Widget>[
-              FlatButton(
-                  child: Text('Ok'),
-                  onPressed: () =>
-                      {Navigator.of(context).pop(), Navigator.pop(context)})
-            ],
-          );
-        });
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Sucesso!'),
+          content: Text('Sua receita foi publicada com sucesso!'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Ok'),
+              onPressed: () =>
+                {Navigator.of(context).pop(), Navigator.pop(context)})
+          ],
+        );
+      });
   }
 
   Future getImage() async {
@@ -61,7 +65,6 @@ class _CadastrarReceitasPageState extends State<CadastrarReceitasPage> {
       setState(() {
         _image = File(pickedFile.path);
       });
-      // uploadImage(context, receita);
     }
   }
 
@@ -94,8 +97,8 @@ class _CadastrarReceitasPageState extends State<CadastrarReceitasPage> {
               width: 40,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage("imgs/icon.png"),
-                    fit: BoxFit.fitHeight),
+                  image: AssetImage("imgs/icon.png"),
+                  fit: BoxFit.fitHeight),
               ),
             ),
             SizedBox(width: 5),
@@ -134,11 +137,11 @@ class _CadastrarReceitasPageState extends State<CadastrarReceitasPage> {
                                 width: 190,
                                 height: 190,
                                 child: (_image != null)
-                                    ? Image.file(_image, fit: BoxFit.fill)
-                                    : Image.network(
-                                        'gs://icook-gcc144.appspot.com/image_picker5940230501014420480.jpg',
-                                        fit: BoxFit.fill,
-                                      ),
+                                  ? Image.file(_image, fit: BoxFit.fill)
+                                  : Image.network(
+                                    'gs://icook-gcc144.appspot.com/image_picker5940230501014420480.jpg',
+                                    fit: BoxFit.fill,
+                                  ),
                               ),
                             ),
                           ),

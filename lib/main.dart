@@ -6,7 +6,6 @@ void main() {
   runApp(MyApp());
 }
 
-// ignore: must_be_immutable
 class MyApp extends StatelessWidget {
 
   @override
@@ -18,7 +17,6 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.red,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      // home: SplashScreen(),
       home: FutureBuilder(
         future: Firebase.initializeApp(),
         builder: (context, snapshot) {

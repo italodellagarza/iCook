@@ -1,9 +1,7 @@
-///
-/// user.dart
-/// Classe Usuário
-/// Responsável por armazenar os dados do usuário, sendo interligado aos dados
-/// de autenticação no Firebase.
-///
+/*
+  Responsável por armazenar os dados do usuário, sendo interligado aos dados
+  de autenticação no Firebase.
+*/
 class Usuario {
   String nome;
   String email;

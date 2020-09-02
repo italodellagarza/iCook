@@ -1,3 +1,7 @@
+/*
+  Controla se o usuário está ou não com o login autorizado para entrar no aplicativo.
+*/
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/services.dart';
@@ -5,7 +9,6 @@ import 'package:flutter/services.dart';
 import 'authentication.dart';
 import 'package:ICook/homepage.dart';
 import 'package:ICook/loginsinguppage.dart';
-import 'package:ICook/cadastrarreceitapage.dart';
 
 enum AuthStatus {
   NOT_DETERMINED,
